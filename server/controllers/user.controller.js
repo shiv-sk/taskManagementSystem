@@ -81,6 +81,7 @@ exports.register = asyncHandler(async (req,res)=>{
 
 exports.login = asyncHandler(async(req,res)=>{
     const {email , password} = req.body;
+    console.log(req.body);
     const user = await User.findOne({email});
     if(!user){
         throw new ApiError(404 , "user is not found");

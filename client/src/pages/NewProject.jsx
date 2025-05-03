@@ -1,23 +1,48 @@
 import { useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { baseUrl, postAndPatchReq } from "../apiCalls"
+import { toast } from "react-toastify";
 
 export default function NewProject(){
-    const handleLogin = ()=>{}
+    const {userId} = useParams();
+    const navigate = useNavigate();
+    const [isLoading , setIsLoading] = useState(false);
     const [ProjectData , setProjectData] = useState({
         title:"",
-        description:""
+        description:"",
+        owner:userId ? userId : null
     })
+
     const handleOnChange = (e)=>{
         setProjectData({...ProjectData , [e.target.name]:e.target.value})
     }
-    const {userId} = useParams();
-    console.log("userId from new Project! " , userId);
+    
+    const handleNewProject = async(e)=>{
+        e.preventDefault();
+        if(!userId){
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const response = await postAndPatchReq(`${baseUrl}/project/new` , "post" , ProjectData);
+            // console.log(response);
+            if(response.status === "success"){
+                navigate(`/allprojects/${userId}`);
+            }
+        } catch (error) {
+            // console.error("error from newProject! " , error?.response?.data?.message);
+            const errorMessage = error?.response?.data?.message || "server Error! "
+            toast.error(errorMessage)
+        }finally{
+            setIsLoading(false);
+        }
+    }
     return(
-        <div className="flex flex-col justify-center items-center min-h-screen gap-4">
+        <div className="flex flex-col justify-center items-center min-h-screen gap-4 py-5">
             <div className="max-w-sm w-full bg-base-100 p-6 rounded-lg shadow-md">
                 <h1 className="text-center font-bold text-2xl mb-1.5">NewProject</h1>
                 <div className="">
-                    <form className="flex flex-col gap-4" onSubmit={handleLogin}>
+                    <form className="flex flex-col gap-4" onSubmit={handleNewProject}>
                     <label htmlFor="title" className="text-sm font-medium mb-1">Title</label>    
                     <input
                     name="title" 
@@ -38,8 +63,10 @@ export default function NewProject(){
                     onChange={handleOnChange} 
                     placeholder="Project-Description" 
                     required></textarea>
-                    <button type="submit" 
-                    className="btn-neutral btn w-full text-white text-lg font-semibold">NewProject</button>
+                    <button 
+                    type="submit" 
+                    className="btn-neutral btn w-full text-white text-lg font-semibold" 
+                    disabled={isLoading}>{isLoading ? "Processing.." : "NewProject"}</button>
                     </form>
                 </div>
             </div>

@@ -10,6 +10,12 @@ exports.newTask = asyncHandler(async (req , res)=>{
         throw new ApiError(400 , "projectId is empty or inValid! ");
     }
     const {title , description} = req.body;
+    const existTask = await Task.findOne({$and:[{project:projectId} , {title}]});
+    if(existTask){
+        return res.status(400).json(
+            new ApiResponse("Task is Existed! " , {} , 400 , "fail")
+        )
+    }
     const task = await Task.create({
         title,
         description,

@@ -6,6 +6,12 @@ const asyncHandler = require("../utils/asynchandler");
 
 exports.newProject = asyncHandler(async (req , res)=>{
     const {title , description , owner} = req.body;
+    const existProject = await Project.findOne({$and:[{title} , {owner}]});
+    if(existProject){
+        return res.status(400).json(
+            new ApiResponse("project already exist! " , {} , 400 , "fail")
+        ) 
+    }
     const project = await Project.create({
         title,
         description,
@@ -40,7 +46,7 @@ exports.getProject = asyncHandler(async(req , res)=>{
     if(!projectId || !mongoose.Types.ObjectId.isValid(projectId)){
         throw new ApiError(400 , "projectId is missing or inValid! ");
     }
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(projectId).populate("owner" , "name");
     if(!project){
         return res.status(404).json(
             new ApiResponse("project not found! " , {} , 404)

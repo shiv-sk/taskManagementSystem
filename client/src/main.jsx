@@ -13,6 +13,8 @@ import TaskDetail from './pages/TaskDetail.jsx';
 import ProjectDetail from './pages/Projectdetail.jsx';
 import NewProject from './pages/NewProject.jsx';
 import MyAssignedTask from './pages/MyAssignedTask.jsx';
+import { ToastContainer } from 'react-toastify';
+import { AuthProvider } from './context/AuthContext.jsx';
 
 const router = createBrowserRouter([
   {
@@ -65,7 +67,20 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}>
-    </RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router}/>
+      <ToastContainer
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      />
+    </AuthProvider>
   </StrictMode>,
 )

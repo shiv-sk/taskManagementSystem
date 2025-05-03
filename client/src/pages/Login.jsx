@@ -1,13 +1,32 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
+import { toast } from "react-toastify";
 
 export default function Login(){
-    const handleLogin = ()=>{}
     const [loginData , setLoginData] = useState({
         email:"",
         password:""
     })
-    const handleOnChange = ()=>{}
+
+    const {loginUser , isLoading} = useAuth();
+    const navigate = useNavigate();
+
+    const handleOnChange = (e)=>{
+        setLoginData({...loginData , [e.target.name]:e.target.value})
+    }
+
+    const handleLogin = async(e)=>{
+        e.preventDefault();
+        const response = await loginUser(loginData);
+        if(response.success){
+            navigate("/");
+        }
+        else{
+            console.error(response.error);
+            toast.error(response.error || "login failed! ");
+        }
+    }
     return(
         <div className="flex flex-col justify-center items-center min-h-screen gap-4">
             <div className="max-w-sm w-full bg-base-100 p-6 rounded-lg shadow-md">
@@ -38,7 +57,8 @@ export default function Login(){
                     <p> Create a new account <Link to={"/register"}>
                     <span className="hover:border-b-2 hover:text-blue-500">Register</span></Link></p>
                     <button type="submit" 
-                    className="btn-neutral btn w-full text-white text-lg font-semibold">Login</button>
+                    className="btn-neutral btn w-full text-white text-lg font-semibold" 
+                    disabled={isLoading}>{isLoading ? "Processing..." :"Login"}</button>
                     </form>
                 </div>
             </div>

@@ -1,17 +1,38 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 export default function Register(){
-    const handleRegister = ()=>{}
     const [registerData , setRegisterData] = useState({
         name:"",
         email:"",
         country:"",
         password:""
     })
-    const handleOnChange = ()=>{}
+
+    const { registerUser, isLoading } = useAuth();
+    const navigate = useNavigate();
+
+    const handleOnChange = (e)=>{
+        setRegisterData({...registerData , [e.target.name]:e.target.value})
+    }
+
+    const handleRegister = async(e)=>{
+        e.preventDefault();
+        try {
+            const response = await registerUser(registerData);
+            if(response.success){
+                navigate("/allprojects");
+            }
+        } catch (error) {
+            console.error(error);
+            const registerError = error.response?.data?.message || "Error in Register! ";
+            toast.error(registerError)
+        }
+    }
     return(
-        <div className="flex flex-col justify-center items-center min-h-screen gap-4">
+        <div className="flex flex-col justify-center items-center min-h-screen gap-4 py-5">
             <div className="max-w-sm w-full bg-base-100 p-6 rounded-lg shadow-md">
                 <h1 className="text-center font-bold text-2xl mb-1.5">Register</h1>
                 <div className="">
@@ -62,7 +83,8 @@ export default function Register(){
                     />
                     <p>Already have an account <Link to={"/login"}>
                     <span className="hover:border-b-2 hover:text-blue-500">Login</span></Link></p>
-                    <button className="btn w-full bg-blue-600 text-white text-lg font-semibold" type="submit" >Register</button>
+                    <button className="btn w-full bg-gray-600 text-white text-lg font-semibold" 
+                    type="submit" disabled={isLoading}>{isLoading ? "Processing..." : "Register"}</button>
                     </form>
                 </div>
             </div>
