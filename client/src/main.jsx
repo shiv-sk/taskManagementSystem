@@ -18,6 +18,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import EditProject from './pages/EditProject.jsx';
 import AssignTask from './pages/AssignTask.jsx';
 import EditTask from './pages/EditTask.jsx';
+import ProtectedRoute from './utils/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -38,43 +39,44 @@ const router = createBrowserRouter([
       },
       {
         path:"assigntask/:taskId",
-        element:<AssignTask/>
+        element:(<ProtectedRoute><AssignTask/></ProtectedRoute>)
+        
       },
       {
         path:"allprojects/:userId",
-        element:<AllPorojects/>
+        element:(<ProtectedRoute><AllPorojects/></ProtectedRoute>)
       },
       {
         path:"mytasks/:userId",
-        element:<MyAssignedTask/>
+        element:(<ProtectedRoute><MyAssignedTask/></ProtectedRoute>)
       },
       {
         path:"alltasks/:projectId",
-        element:<AllTasks/>
+        element:(<ProtectedRoute><AllTasks/></ProtectedRoute>)
       },
       {
         path:"editproject/:projectId",
-        element:<EditProject/>
+        element:(<ProtectedRoute><EditProject/></ProtectedRoute>)
       },
       {
         path:"task/:taskId",
-        element:<TaskDetail/>
+        element:(<ProtectedRoute><TaskDetail/></ProtectedRoute>)
       },
       {
         path:"edittask/:taskId",
-        element:<EditTask/>
+        element:(<ProtectedRoute><EditTask/></ProtectedRoute>)
       },
       {
         path:"project/:projectId",
-        element:<ProjectDetail/>
+        element:(<ProtectedRoute><ProjectDetail/></ProtectedRoute>)
       },
       {
         path:"newtask/:projectId",
-        element:<NewTask/>
+        element:(<ProtectedRoute><NewTask/></ProtectedRoute>)
       },
       {
         path:"newproject/:userId",
-        element:<NewProject/>
+        element:(<ProtectedRoute><NewProject/></ProtectedRoute>)
       },
     ]
   }
