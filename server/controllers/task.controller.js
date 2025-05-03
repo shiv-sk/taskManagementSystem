@@ -50,7 +50,7 @@ exports.getTask = asyncHandler(async(req , res)=>{
     if(!taskId || !mongoose.Types.ObjectId.isValid(taskId)){
         throw new ApiError(400 , "taskId is missing or inValid! ");
     }
-    const task = await Task.findById(taskId);
+    const task = await Task.findById(taskId).populate("assignedTo" , "name");
     if(!task){
         return res.status(404).json(
             new ApiResponse("task not found! " , {} , 404)
@@ -86,3 +86,38 @@ exports.deleteTask = asyncHandler(async(req , res)=>{
     }
     return res.status(204).json()
 })
+
+exports.assignTask = asyncHandler(async(req , res)=>{
+    const {taskId} = req.params;
+    const {userId} = req.body;
+    if(!taskId || !mongoose.Types.ObjectId.isValid(taskId)){
+        throw new ApiError(400 , "taskId is missing or inValid! ");
+    }
+    if(!userId || !mongoose.Types.ObjectId.isValid(userId)){
+        throw new ApiError(400 , "userId is missing or inValid! ");
+    }
+    const updatedTask = await Task.findByIdAndUpdate(taskId , {assignedTo:userId} , {runValidators:true , new:true});
+    if(!updatedTask){
+        throw new ApiError(500 , "task is not updated! ");
+    }
+    return res.status(200).json(
+        new ApiResponse("updated task is! " , updatedTask , 200)
+    )
+})
+
+exports.closeTask = asyncHandler(async(req , res)=>{
+    const {taskId} = req.params;
+    if(!taskId || !mongoose.Types.ObjectId.isValid(taskId)){
+        throw new ApiError(400 , "taskId is missing or inValid! ");
+    }
+    const updatedTask = await Task.findByIdAndUpdate(taskId , 
+    {status:"Closed" , completedAt:new Date()} , 
+    {runValidators:true , new:true});
+    if(!updatedTask){
+        throw new ApiError(500 , "task is not updated! ");
+    }
+    return res.status(200).json(
+        new ApiResponse("updated task is! " , updatedTask , 200)
+    )
+})
+
