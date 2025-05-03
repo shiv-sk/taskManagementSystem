@@ -24,6 +24,9 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(cors(corsOption));
 
+app.get("/hello" , (req , res)=>{
+    res.send('Hello World!');
+})
 //routes
 const userRoutes = require("./routes/user.routes");
 app.use("/api/v1/user" , userRoutes);
