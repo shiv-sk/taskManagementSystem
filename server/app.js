@@ -5,7 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["http://localhost:5173" , "https://task-management-system-seven-topaz.vercel.app/"];
 const corsOption = {
     origin:function(origin , callback){
         if(!origin || allowedOrigins.includes(origin)){
