@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { baseUrl, getAndDeleteReq } from "../apiCalls";
 import { toast } from "react-toastify";
 
@@ -55,7 +55,7 @@ export default function TaskDetail(){
                             </div>
                             <div className="flex flex-wrap justify-around items-center gap-1.5">
                                 <button className="btn btn-neutral shadow-lg">Assign</button>
-                                <button className="btn btn-neutral shadow-lg">Edit</button>
+                                <Link to={`/edittask/${task._id}`}><button className="btn btn-neutral shadow-lg">Edit</button></Link>
                                 <button className="btn btn-neutral shadow-lg">Delete</button>
                             </div>
                         </>

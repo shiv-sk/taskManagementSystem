@@ -27,8 +27,8 @@ export default function Register(){
             }
         } catch (error) {
             console.error(error);
-            const registerError = error.response?.data?.message || "Error in Register! ";
-            toast.error(registerError)
+            const errorMessage = error.response?.data?.message || "Error in Register! ";
+            toast.error(errorMessage)
         }
     }
     return(

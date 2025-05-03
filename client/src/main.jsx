@@ -15,6 +15,9 @@ import NewProject from './pages/NewProject.jsx';
 import MyAssignedTask from './pages/MyAssignedTask.jsx';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './context/AuthContext.jsx';
+import EditProject from './pages/EditProject.jsx';
+import AssignTask from './pages/AssignTask.jsx';
+import EditTask from './pages/EditTask.jsx';
 
 const router = createBrowserRouter([
   {
@@ -30,8 +33,12 @@ const router = createBrowserRouter([
         element:<Register/>
       },
       {
-        path:"Login",
+        path:"login",
         element:<Login/>
+      },
+      {
+        path:"assigntask/:taskId",
+        element:<AssignTask/>
       },
       {
         path:"allprojects/:userId",
@@ -46,8 +53,16 @@ const router = createBrowserRouter([
         element:<AllTasks/>
       },
       {
+        path:"editproject/:projectId",
+        element:<EditProject/>
+      },
+      {
         path:"task/:taskId",
         element:<TaskDetail/>
+      },
+      {
+        path:"edittask/:taskId",
+        element:<EditTask/>
       },
       {
         path:"project/:projectId",

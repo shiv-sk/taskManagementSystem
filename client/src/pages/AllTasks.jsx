@@ -48,7 +48,7 @@ export default function AllTasks(){
                                 <p>{task.description || "Task Description!"}</p>
                                 <div className="card-actions justify-end">
                                 <Link to={`/task/${task._id}`}><button className="btn btn-neutral shadow-lg">More</button></Link>
-                                <button className="btn btn-neutral shadow-lg">Assign</button>
+                                <Link to={`/assigntask/${task._id}`}><button className="btn btn-neutral shadow-lg">Assign</button></Link>
                                 </div>
                             </div>
                         </div>

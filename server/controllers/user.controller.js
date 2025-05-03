@@ -52,6 +52,23 @@ exports.logOut = asyncHandler(async(req , res)=>{
     )
 })
 
+exports.getAllUsers = asyncHandler(async(req , res)=>{
+    const users = await User.find();
+    if(users.length === 0){
+        return res.status(404).json(
+            new ApiResponse(" users are not found!" , {} , 404 , "fail")
+        )
+    }
+    const sanitizedUsers = users.map((user)=>{
+        const userObj = user.toObject();
+        delete userObj.password;
+        return userObj;
+    })
+    return res.status(200).json(
+        new ApiResponse("users are! " , sanitizedUsers , 200)
+    )
+})
+
 exports.register = asyncHandler(async (req,res)=>{
     const {name , email , password , country} = req.body;
     const existUser = await User.findOne({$and:[{email} , {name}]});

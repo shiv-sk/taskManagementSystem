@@ -48,7 +48,7 @@ export default function ProjectDetail(){
                         </div>
                         <div className="flex flex-wrap justify-around items-center gap-1.5">
                             <Link to={`/alltasks/${project._id}`}><button className="btn btn-neutral shadow-lg">AllTasks</button></Link>
-                            <button className="btn btn-neutral shadow-lg">Edit</button>
+                            <Link to={`/editproject/${project._id}`}><button className="btn btn-neutral shadow-lg">Edit</button></Link>
                             <button className="btn btn-neutral shadow-lg">Delete</button>
                         </div>
                     </div>
