@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar(){
-    const {user} = useAuth();
+    const {user , logoutUser} = useAuth();
     return(
         <div className="navbar bg-gray-600 shadow-lg">
             {
@@ -34,7 +34,7 @@ export default function Navbar(){
                             </ul>
                         </div>
                         <div className="navbar-end">
-                            <button className="btn hover:shadow-lg text-lg">logout</button>
+                            <button className="btn hover:shadow-lg text-lg" onClick={logoutUser}>logout</button>
                         </div>
                     </>
                 ) : (
