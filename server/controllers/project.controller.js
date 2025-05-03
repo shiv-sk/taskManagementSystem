@@ -7,6 +7,12 @@ const asyncHandler = require("../utils/asynchandler");
 exports.newProject = asyncHandler(async (req , res)=>{
     const {title , description , owner} = req.body;
     const existProject = await Project.findOne({$and:[{title} , {owner}]});
+    const totalProjects = await Project.find({owner});
+    if(totalProjects.length >= 4){
+        return res.status(400).json(
+            new ApiResponse("project length is exiceded! " , {} , 400 , "fail")
+        ) 
+    }
     if(existProject){
         return res.status(400).json(
             new ApiResponse("project already exist! " , {} , 400 , "fail")
